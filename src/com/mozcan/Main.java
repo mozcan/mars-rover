@@ -4,7 +4,6 @@ import com.mozcan.model.EnumStep;
 import com.mozcan.service.Move;
 import com.mozcan.utils.MoveUtils;
 
-import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
@@ -40,15 +39,15 @@ public class Main {
                 lastPosition = MoveUtils.getLastPosition(lastPosition,step);
             } else {
 
-                MoveFactory moveFactory = new MoveFactory();
-                Move move = moveFactory.getMoveObject(lastPosition);
+                Move move = MoveUtils.getMoveObject(lastPosition);
+                MoveStrategy moveStrategy = new MoveStrategy(move);
 
                 String lastCoordinatList[] = lastCoordinate.split(" ");
 
                 if(EnumStep.FORWARD.getStep().equalsIgnoreCase(step)) {
-                    lastCoordinate = move.moveForward(Integer.parseInt(lastCoordinatList[0]),Integer.parseInt(lastCoordinatList[1]));
+                    lastCoordinate = moveStrategy.moveForwward(Integer.parseInt(lastCoordinatList[0]),Integer.parseInt(lastCoordinatList[1]));
                 } else {
-                    lastCoordinate = move.moveBack(Integer.parseInt(lastCoordinatList[0]),Integer.parseInt(lastCoordinatList[1]));
+                    lastCoordinate = moveStrategy.moveBack(Integer.parseInt(lastCoordinatList[0]),Integer.parseInt(lastCoordinatList[1]));
                 }
 
                 if(Boolean.TRUE.equals(MoveUtils.checkBoundaryViolation(boundaries,lastCoordinate)))
